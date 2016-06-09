@@ -45,7 +45,7 @@ def process_data(q):
         pkg = q.get()
         data = json.loads(pkg) # get decision: list of tuple(ip, port) # TODO: now only IP
         judgment = judge(data) # judge them
-        s.send(judgment) # send judgment to firewall
+        s.send(json.dumps(judgment)) # send judgment to firewall
 
 
 def main():
