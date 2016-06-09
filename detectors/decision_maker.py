@@ -7,6 +7,7 @@ class DecisionMaker():
 
 
     def __init__(self, config):
+
         self.storage = Storage(config)
         
         self.models = { 
@@ -17,12 +18,13 @@ class DecisionMaker():
         }
         
         self.features = ['bcount', 'pcount']
-        self.filters = [
-            'd', 's_d', 
-            #'sp_d', 'sp_dp'
-        ]
-    
-
+        
+        
+    '''
+    return tuple of adresses where predicted malware label
+    df - current dataframe
+    pred - predicted list
+    '''
     def get_malware_tables(self, df, pred):
 
         if len(df) != len(pred):
@@ -41,6 +43,9 @@ class DecisionMaker():
         return table_src, table_dst
 
 
+    '''
+    Make prediction by @data with filter @s and get src and dst addresses by @malware_tables
+    '''
     def predict(self, data, s, malware_tables=None):
         
         df = self.storage.filter_data(data, nf_group_type=s, malware_tables=malware_tables)
@@ -49,19 +54,24 @@ class DecisionMaker():
             features.append('ucount')
         pred = self.models[s].predict(df[features])
 
-        return self.get_malware_tables(pred)
+        return self.get_malware_tables(df=df, pred=pred)
 
 
-
+    '''
+    return list of addresses for judge
+    '''
     def make(self, timestamp=None, depth=None):
 
         result = None
         
+        # get data from DB by timestamp and depth
         data = self.storage.select(timestamp, depth)
         
-        malware_tables = self.predict(data, "d")
+        # predict by filter("d")
+        malware_tables_d = self.predict(data, "d")
         
-        malware_src, malware_dst = self.predict(data, "s_d", malware_tables=malware_tables)
+        # get malware addresses
+        malware_src, malware_dst = self.predict(data, "s_d", malware_tables=malware_tables_d)
         
         if len(malware_src) > 0:
             result = sorted(malware_src)
@@ -78,5 +88,7 @@ class DecisionMaker():
         
         return result
 
+
     def end(self):
+
         self.storage.close()
