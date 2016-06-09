@@ -164,7 +164,7 @@ class Storage():
                         flow['upairs'].add((flow['saddr'], d[4], flow['daddr'], d[5]))
                         
                         flow['upairs'].add(upair)
-                        if s not in nfc_group:
+                        if upair not in nfc_group:
                             nfc_group[upair] = self.nfdata_new()
                         
                         nfc_group[upair] = self.nfdata_add(nfc_group[upair], flow)
