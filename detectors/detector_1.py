@@ -19,7 +19,7 @@ sock = Sock({
 ATTACK_THRESHOLD = 2
 attack_count = 0
 
-model = joblib.load("models/100decisionTreeALL.pkl")
+model = joblib.load("models_binary/100decisionTreeALL.pkl")
 
 # listening socket
 def process_socket(q):
