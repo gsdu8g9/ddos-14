@@ -52,6 +52,7 @@ def process_data(q):
         #    { 't': None, 'ip': '1.2.1.1', 'bad_ports': [1, 3, 4], 'good_ports': [3,4,5], 'timeout': 5, 'is_inner': False },   # close IP address
         #]
         for d in data:
+            print "blocked ", str(d['ip'])
             firewall.block(**d)
 
 
