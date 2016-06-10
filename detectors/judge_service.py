@@ -25,6 +25,8 @@ def process_socket(q):
         q.put(pkg)
 
 
+from random import randint
+
 def judge(data):
 
     result = []
@@ -32,7 +34,7 @@ def judge(data):
     # TODO:
     for d in data:
         #only IP
-        result.append({ 't': None, 'ip': d, 'bad_ports': [], 'good_ports': [], 'timeout': 5, 'is_inner': False })
+        result.append({ 't': None, 'ip': d, 'bad_ports': [], 'good_ports': [], 'timeout': randint(1, 10), 'is_inner': False })
 
     return result
 
