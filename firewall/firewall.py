@@ -22,9 +22,11 @@ if not os.getuid() == 0:
   @life_time
 '''
 
-
 class Firewall():
 
+    iptables_insert =  "iptables -I " % config.config["firewall"]["chain"] + " 1 "
+    iptables_delete =  "iptables -D " % config.config["firewall"]["chain"] + " "
+    iptables_append =  "iptables -A " % config.config["firewall"]["chain"] + " "
 
     def __init__(self):
 
@@ -54,7 +56,7 @@ class Firewall():
 
         for rule in rules:
             #delete from 'iptables'
-            result = subprocess.call('iptables -D INPUT ' + rule[1], shell=True)
+            result = subprocess.call(self.iptables_delete + rule[1], shell=True)
             
             # smth wrong!
             if result != 0:
@@ -100,25 +102,25 @@ class Firewall():
             drop_rules = self._rules_batch_ports(rule, bad_ports)
             for r in drop_rules:
                 rule_str = r + j
-                subprocess.call('iptables -A INPUT ' + rule_str, shell=True)
+                subprocess.call(self.iptables_append + rule_str, shell=True)
                 self._add_rule(rule_str, life_time)
 
         elif t == "range":
             if len(bad_ports) > 1: 
                 rule_str = rule + ' -p tcp --sport %d:%d' % (bad_ports[0], bad_ports[1]) + j
-                subprocess.call('iptables -A INPUT ' + rule_str, shell=True)
+                subprocess.call(self.iptables_append + rule_str, shell=True)
                 self._add_rule(rule_str, life_time)
 
         else:
             rule_str = rule + j
-            subprocess.call('iptables -A INPUT ' + rule_str, shell=True)
+            subprocess.call(self.iptables_append + rule_str, shell=True)
             self._add_rule(rule_str, life_time)
 
         # insert ALLOWED ports on IP
         access_rules = self._rules_batch_ports(rule, good_ports)
         for r in access_rules:
             rule_str = r + " -j ACCEPT"
-            subprocess.call('iptables -I INPUT 1 ' + rule_str, shell=True)
+            subprocess.call(self.iptables_insert + rule_str, shell=True)
             self._add_rule(rule_str, life_time)
 
         self._conn.commit()
