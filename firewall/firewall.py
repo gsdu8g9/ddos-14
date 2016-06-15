@@ -24,9 +24,9 @@ if not os.getuid() == 0:
 
 class Firewall():
 
-    iptables_insert =  "iptables -I " % config.config["firewall"]["chain"] + " 1 "
-    iptables_delete =  "iptables -D " % config.config["firewall"]["chain"] + " "
-    iptables_append =  "iptables -A " % config.config["firewall"]["chain"] + " "
+    iptables_insert =  "iptables -I %s " % config.config["firewall"]["chain"] + " 1 "
+    iptables_delete =  "iptables -D %s " % config.config["firewall"]["chain"] + " "
+    iptables_append =  "iptables -A %s " % config.config["firewall"]["chain"] + " "
 
     def __init__(self):
 
