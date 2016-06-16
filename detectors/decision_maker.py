@@ -6,6 +6,9 @@ from sklearn.externals import joblib
 class DecisionMaker():
 
 
+    EMPTY_MALWARE_TABLE = (set([]), set([]))
+
+
     def __init__(self, config):
 
         self.storage = Storage(config)
@@ -18,7 +21,8 @@ class DecisionMaker():
         }
         
         self.features = ['bcount', 'pcount']
-        
+        self.features_sp_dp = ['bcount', 'pcount', 'ucount']
+    
         
     '''
     return tuple of adresses where predicted malware label
@@ -70,6 +74,9 @@ class DecisionMaker():
         # predict by filter("d")
         malware_tables_d = self.predict(data, "d")
         
+        if malware_tables_d == EMPTY_MALWARE_TABLE:
+            return result
+
         # get malware addresses
         malware_src, malware_dst = self.predict(data, "s_d", malware_tables=malware_tables_d)
         
