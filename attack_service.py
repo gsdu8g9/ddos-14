@@ -47,25 +47,25 @@ def create_hosts_file(start, end, id):
 def read_config(file_name):
     MIN_HUNTER_IP = config["MIN_HUNTER_IP"]
     MAX_HUNTER_IP = config["MAX_HUNTER_IP"]
-    config = ConfigParser.ConfigParser()
-    config.read(file_name)
-    sections = config.sections()
+    config_ini = ConfigParser.ConfigParser()
+    config_ini.read(file_name)
+    sections = config_ini.sections()
     attacks = {}
     id = 0
     for section in sections:
         attacks[id] = {}
-        attacks[id]['name'] = config.get (section, 'name')
-        attacks[id]['command'] = config.get (section, 'command')
-        attacks[id]['desc'] = config.get (section, 'desc')
-        attacks[id]['start_time'] = config.getint (section, 'start_time')
+        attacks[id]['name'] = config_ini.get (section, 'name')
+        attacks[id]['command'] = config_ini.get (section, 'command')
+        attacks[id]['desc'] = config_ini.get (section, 'desc')
+        attacks[id]['start_time'] = config_ini.getint (section, 'start_time')
 
         start_hunter_ip = MIN_HUNTER_IP
         end_hunter_ip = MAX_HUNTER_IP
 
-        if config.has_option (section, 'start_hunter_ip'):
-            start_hunter_ip = config.getint (section, 'start_hunter_ip')
-        if config.has_option (section, 'end_hunter_ip'):
-            end_hunter_ip = config.getint(section, 'end_hunter_ip')
+        if config_ini.has_option (section, 'start_hunter_ip'):
+            start_hunter_ip = config_ini.getint (section, 'start_hunter_ip')
+        if config_ini.has_option (section, 'end_hunter_ip'):
+            end_hunter_ip = config_ini.getint(section, 'end_hunter_ip')
 
         if (start_hunter_ip > MAX_HUNTER_IP) or (start_hunter_ip < MIN_HUNTER_IP):
             start_hunter_ip = MIN_HUNTER_IP
