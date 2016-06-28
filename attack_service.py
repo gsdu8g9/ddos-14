@@ -37,7 +37,7 @@ def create_hosts_file(start, end, id):
     f = open('hosts_for_attack'+str(id), 'w')
     f.write('[hunters]' + '\n')
     for i in range (start,end+1):
-        f.write(config[''] + str(i) + '\n')
+        f.write(config['target_ip_mask'] + str(i) + '\n')
     f.write('[hunters:vars]' + '\n')
     f.write('ansible_ssh_private_key_file=/home/ubuntu/cloud.key' + '\n')
     f.write('[ssh_connection]' + '\n')
