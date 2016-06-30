@@ -1,16 +1,22 @@
 ﻿var pg = require('pg');
 
-var config = {
-    user: 'postgres',
-    password: '123456',
-    database: 'postgres',
-    new_database: 'traffic',
-    host: 'localhost',
-    port: 5432
-};
+var config = require('../config.json').database;
+config.master = 'postgres';
+
+//var config = {
+//    user: 'postgres',
+//    password: '123456',
+//    database: 'postgres',
+//    new_database: 'traffic',
+//    host: 'localhost',
+//    port: 5432
+//};
+
+
+
 
 var get_create_db = function () {
-    return "CREATE DATABASE " + config.new_database +
+    return "CREATE DATABASE " + config.database +
         "  WITH OWNER = " + config.user +
         "       ENCODING = 'UTF8'\n" +
         "       TABLESPACE = pg_default\n" +
@@ -30,19 +36,19 @@ var get_create_table_flows = function () {
 };
 
 var get_drop_db = function () {
-    return "DROP DATABASE IF EXISTS " + config.new_database;
+    return "DROP DATABASE IF EXISTS " + config.database;
 };
 
 
-var createTable = function (f) {
-    config.database = config.new_database;
+var createTable = function (c) {
+    config.master = config.database;
     var client = new pg.Client(config);
     client.connect();
     var query = client.query(get_create_table_flows());
     query.on('end', function () {
         client.end();
         console.log("* Table created!");
-        f();
+        c();
     });
 };
 

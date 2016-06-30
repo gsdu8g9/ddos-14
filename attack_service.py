@@ -14,7 +14,7 @@ with open("config.json") as config_file:
 
 def send_udp_message(body):
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    sock.sendto(body, (config["IP"], config["PORT"]))
+    sock.sendto(body, (config["ip"], config["port"]))
 
 
 def send_attack_list(d):
@@ -44,9 +44,12 @@ def create_hosts_file(start, end, id):
     f.write('scp_if_ssh=True' + '\n')
     f.close()
 
+
 def read_config(file_name):
-    MIN_HUNTER_IP = config["MIN_HUNTER_IP"]
-    MAX_HUNTER_IP = config["MAX_HUNTER_IP"]
+
+    MIN_HUNTER_IP = config["min_hunter_ip"]
+    MAX_HUNTER_IP = config["max_hunter_ip"]
+
     config_ini = ConfigParser.ConfigParser()
     config_ini.read(file_name)
     sections = config_ini.sections()
@@ -77,6 +80,7 @@ def read_config(file_name):
 
         id += 1
     return attacks
+
 
 def attack_process(id,data,q):
     create_hosts_file(data['start_hunter_ip'], data['end_hunter_ip'], id)

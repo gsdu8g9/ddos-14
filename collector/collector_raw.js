@@ -4,60 +4,60 @@ var zmq = require("zmq");
 var socket_s = zmq.socket("push");
 var dgram = require("dgram");
 
+var NetFlowCollection = require("./nfc.js").NetFlowCollection;
 var storage = require('./storage.js');
 
-var config = {
-    numCPUs: require('os').cpus().length,
-    NetFlowPort: 6344,
-    interval: 5000,
-    PORT_OUT: 6347,
-    PORT_IN: 6345,
-    IP: "127.0.0.1",
-};
+var cfg = require('../config.json');
+var config = cfg.collector;
+
+config.NetFlowPort = cfg.attack_service.port;
+config.numCPUs = require('os').cpus().length;
+
 
 var PROTOCOL = { _1: "ICMP", _6: "TCP", _14: "Telnet", _17: "UDP" };
 
-var NetFlowCollection = function () {
+/*
+//var NetFlowCollection = function () {
+//    
+//    var self = this;
     
-    var self = this;
+//    self.flows = 0;
+//    self.bytesCount = 0;
+//    self.packetsCount = 0;
+//    self.protocols = {
+//        TCP: 0,
+//        ICMP: 0,
+//        Telnet: 0,
+//        UDP: 0,
+//    };
     
-    self.flows = 0;
-    self.bytesCount = 0;
-    self.packetsCount = 0;
-    self.protocols = {
-        TCP: 0,
-        ICMP: 0,
-        Telnet: 0,
-        UDP: 0,
-    };
+//    self.uniquePairs = {};
+//    self.bytesArray = [];
     
-    self.uniquePairs = {};
-    self.bytesArray = [];
-    
-    self.add = function (flow) {
-        self.bytesCount += flow.bytesCount;
-        self.packetsCount += flow.packetsCount;
+//    self.add = function (flow) {
+//        self.bytesCount += flow.bytesCount;
+//        self.packetsCount += flow.packetsCount;
         
-        self.protocols.TCP += flow.protocols.TCP;
-        self.protocols.ICMP += flow.protocols.ICMP;
-        self.protocols.Telnet += flow.protocols.Telnet;
-        self.protocols.UDP += flow.protocols.UDP;
+//        self.protocols.TCP += flow.protocols.TCP;
+//        self.protocols.ICMP += flow.protocols.ICMP;
+//        self.protocols.Telnet += flow.protocols.Telnet;
+//        self.protocols.UDP += flow.protocols.UDP;
         
-        for (var p in flow.uniquePairs) {
-            self.uniquePairs[p] = 1;
-        }
+//        for (var p in flow.uniquePairs) {
+//            self.uniquePairs[p] = 1;
+//        }
 
-    };
+//    };
     
-    self.uniquePairsCount = 0;
+//    self.uniquePairsCount = 0;
     
-    self.inline = function (time) {
-        self.uniquePairsCount = Object.keys(self.uniquePairs).length;
-        return time + "," + self.uniquePairsCount + "," + self.bytesCount + "," + self.packetsCount;
-    }
+//    self.inline = function (time) {
+//        self.uniquePairsCount = Object.keys(self.uniquePairs).length;
+//        return time + "," + self.uniquePairsCount + "," + self.bytesCount + "," + self.packetsCount;
+//    }
     
-};
-
+//};
+*/
 if (cluster.isMaster) {
     
     var benign = function () {
@@ -66,7 +66,7 @@ if (cluster.isMaster) {
 
     var attack = benign();
     
-    socket_s.connect('tcp://' + config.IP + ':' + config.PORT_OUT);
+    socket_s.connect('tcp://' + cfg.detector_1.ip + ':' + cfg.detector_1.port);
     
     var socket_r = dgram.createSocket("udp4");
     
@@ -89,7 +89,7 @@ if (cluster.isMaster) {
 
     });
 
-    socket_r.bind(config.PORT_IN);
+    socket_r.bind(config.port);
     
     var i = 0;
     var cnt = 0;

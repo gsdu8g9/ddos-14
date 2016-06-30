@@ -1,12 +1,14 @@
 ﻿var pg = require('pg');
 
-var config = {
-    user: 'postgres',
-    password: '123456',
-    database: 'traffic',
-    host: 'localhost',
-    port: 5432
-};
+var config = require('../config.json').database;
+
+//var config = {
+//    user: 'postgres',
+//    password: '123456',
+//    database: 'traffic',
+//    host: 'localhost',
+//    port: 5432
+//};
 
 
 exports.add = function (d) {
