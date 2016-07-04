@@ -71,17 +71,30 @@ class DecisionMaker():
         # get data from DB by timestamp and depth
         data = self.storage.select(timestamp, depth)
         
-        # predict by filter("d")
+        
         malware_tables_d = self.predict(data, "d")
         
         if malware_tables_d == EMPTY_MALWARE_TABLE:
+            del data
             return result
 
-        # get malware addresses
-        malware_src, malware_dst = self.predict(data, "s_d", malware_tables=malware_tables_d)
         
-        if len(malware_src) > 0:
-            result = sorted(malware_src)
+        malware_tables_s_d = self.predict(data, "s_d", malware_tables=malware_tables_d)
+               
+        if malware_tables_s_d == EMPTY_MALWARE_TABLE:
+            del data
+            return result
+        
+
+        malware_tables_sp_d = self.predict(data, "sp_d", malware_tables=malware_tables_s_d)
+
+        if malware_tables_sp_d == EMPTY_MALWARE_TABLE:
+            del data
+            return result
+        
+        
+        malware_src, malware_dst = self.predict(data, "sp_dp", malware_tables=malware_tables_sp_d)
+        
 
         #!
         #s = 's_d'
@@ -93,6 +106,14 @@ class DecisionMaker():
         #if len(src_list) > 0:
         #    result = "', '".join(src_list)
         
+        if len(malware_src) > 0:
+            result = sorted(malware_src)
+        
+        del malware_tables_d
+        del malware_tables_s_d
+        del malware_tables_sp_d
+        del data
+
         return result
 
 
