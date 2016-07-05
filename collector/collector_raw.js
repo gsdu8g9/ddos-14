@@ -7,11 +7,20 @@ var dgram = require("dgram");
 var NetFlowCollection = require("./nfc.js").NetFlowCollection;
 var storage = require('./storage.js');
 
-var cfg = require('../config.json');
-var config = cfg.collector;
+var config = {
+    numCPUs: require('os').cpus().length,
+    NetFlowPort: 6344,
+    interval: 5000,
+    PORT_OUT: 6347,
+    PORT_IN: 6345,
+    IP: "127.0.0.1",
+};
 
-config.NetFlowPort = cfg.NetFlow.port;
-config.numCPUs = require('os').cpus().length;
+//var cfg = require('../config.json');
+//var config = cfg.collector;
+
+//config.NetFlowPort = cfg.NetFlow.port;
+//config.numCPUs = require('os').cpus().length;
 
 
 var PROTOCOL = { _1: "ICMP", _6: "TCP", _14: "Telnet", _17: "UDP" };
@@ -66,7 +75,8 @@ if (cluster.isMaster) {
 
     var attack = benign();
     
-    socket_s.connect('tcp://' + cfg.detector_1.ip + ':' + cfg.detector_1.port);
+    socket_s.connect('tcp://' + config.IP + ':' + config.PORT_OUT);
+    //socket_s.connect('tcp://' + cfg.detector_1.ip + ':' + cfg.detector_1.port);
     
     var socket_r = dgram.createSocket("udp4");
     
@@ -88,8 +98,9 @@ if (cluster.isMaster) {
         }
 
     });
-
-    socket_r.bind(config.port);
+    
+    socket_r.bind(config.PORT_IN);
+    //socket_r.bind(config.port);
     
     var i = 0;
     var cnt = 0;
