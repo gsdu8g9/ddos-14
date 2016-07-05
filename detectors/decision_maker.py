@@ -109,7 +109,7 @@ class DecisionMaker():
         
         
         malware_src, malware_dst = self.predict(data, "sp_dp", malware_tables=malware_tables_sp_d)
-        print "sp_dp: ", malware_tables_sp_dp
+        print "sp_dp: ", (malware_src, malware_dst)
 
         #!
         #s = 's_d'
