@@ -54,8 +54,8 @@ class DecisionMaker():
         
         df = self.storage.filter_data(data, nf_group_type=s, malware_tables=malware_tables)
         
-        print 'data len:', str(len(data))
-        print 'df len:', str(len(df))
+        #print 'data len:', str(len(data))
+        #print 'df len:', str(len(df))
 
         features = self.features[:]
         if s != "sp_dp":
@@ -67,8 +67,10 @@ class DecisionMaker():
             print "failed", s, "!!!!!!!"
             return self.EMPTY_MALWARE_TABLE
 
+        #print "filtered, on prediction:", df[['dst', 'src']]
+
         pred = self.models[s].predict(df[features])
-        print pred
+        #print pred
 
         return self.get_malware_tables(df=df, pred=pred)
 
@@ -85,6 +87,7 @@ class DecisionMaker():
         
         
         malware_tables_d = self.predict(data, "d")
+        print "\n\n\tSTART:"
         print "d: ", malware_tables_d
 
         if malware_tables_d == self.EMPTY_MALWARE_TABLE:
