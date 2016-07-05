@@ -30,7 +30,7 @@ def send_end(d):
 
 
 def start_attack(id, command):
-    os.system("ansible hunters -b -i ./hosts_for_attack"+str(id)+" -f 99 -a '"+command+"' > /dev/null")
+    os.system("ansible hunters -i ./hosts_for_attack"+str(id)+" -f 99 -a '"+command+"' > /dev/null")
     pass
 
 def create_hosts_file(start, end, id):
@@ -40,8 +40,8 @@ def create_hosts_file(start, end, id):
         f.write(config['target_ip_mask'] + str(i) + '\n')
     f.write('[hunters:vars]' + '\n')
     f.write('ansible_ssh_private_key_file=/home/ubuntu/cloud.key' + '\n')
-    f.write('[ssh_connection]' + '\n')
-    f.write('scp_if_ssh=True' + '\n')
+    #f.write('[ssh_connection]' + '\n')
+    #f.write('scp_if_ssh=True' + '\n')
     f.close()
 
 

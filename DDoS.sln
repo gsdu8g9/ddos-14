@@ -5,6 +5,7 @@ VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{BDD1F4B1-9D07-4B8C-B92C-D5AB3E90097F}"
 	ProjectSection(SolutionItems) = preProject
+		attack_service.py = attack_service.py
 		config.json = config.json
 	EndProjectSection
 EndProject
@@ -12,7 +13,7 @@ Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "detectors", "detectors\dete
 EndProject
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "firewall", "firewall\firewall.pyproj", "{373A8894-6974-4141-9124-FAC41D6D3DED}"
 EndProject
-Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "Collector", "collector\Collector.njsproj", "{FFE4F131-FFE0-467F-8AFC-F2B1CD7D25C0}"
+Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "collector", "collector\collector.njsproj", "{FFE4F131-FFE0-467F-8AFC-F2B1CD7D25C0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

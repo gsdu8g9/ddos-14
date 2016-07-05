@@ -56,6 +56,12 @@ class DecisionMaker():
         features = self.features[:]
         if s != "sp_dp":
             features.append('ucount')
+        
+        X = df[features]
+        
+        if X.shape[0] == 0 or X.shape[1] == 0:
+            return EMPTY_MALWARE_TABLE
+
         pred = self.models[s].predict(df[features])
 
         return self.get_malware_tables(df=df, pred=pred)
