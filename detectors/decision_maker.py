@@ -95,7 +95,7 @@ class DecisionMaker():
             return result
 
         
-        malware_tables_s_d = self.predict(data, "s_d", malware_tables=malware_tables_d)
+        malware_tables_s_d = self.predict(data, "s_d")
         print "s_d: ", malware_tables_s_d
 
         if malware_tables_s_d == self.EMPTY_MALWARE_TABLE:
@@ -103,7 +103,7 @@ class DecisionMaker():
             return result
         
 
-        malware_tables_sp_d = self.predict(data, "sp_d", malware_tables=malware_tables_s_d)
+        malware_tables_sp_d = self.predict(data, "sp_d")
         print "sp_d: ", malware_tables_sp_d
 
         if malware_tables_sp_d == self.EMPTY_MALWARE_TABLE:
@@ -111,7 +111,7 @@ class DecisionMaker():
             return result
         
         
-        malware_src, malware_dst = self.predict(data, "sp_dp", malware_tables=malware_tables_sp_d)
+        malware_src, malware_dst = self.predict(data, "sp_dp")
         print "sp_dp: ", (malware_src, malware_dst)
 
         #!

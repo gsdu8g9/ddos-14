@@ -151,8 +151,6 @@ class Storage():
                         if malware_tables is not None:
                             t_src, t_dst = malware_tables
                             address = upair.split('_')
-                            print "in filter:" , [t_src, t_dst]
-                            print "in df:" , address
                             if address[0] not in t_src and address[1] not in t_dst:
                                 continue
                         
