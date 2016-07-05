@@ -30,7 +30,7 @@ from random import randint
 def judge(data):
 
     result = []
-
+    
     # TODO:
     for d in data:
         #only IP

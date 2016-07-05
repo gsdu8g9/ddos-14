@@ -36,12 +36,13 @@ def process_data(q):
     while True:
         pkg, time1 = q.get()
         decision = decision_maker.make(timestamp=int(pkg), depth=2)
-        print decision
+        print 'decision', decision
         time2 = datetime.datetime.now()
-        print 'decision', time2
+        print time2
         time3 = (time2 - time1).total_seconds()
         print 'delta', time3
-        s.send(json.dumps(decision))
+        if decision is not None:
+            s.send(json.dumps(decision))
         
 
 def main():
