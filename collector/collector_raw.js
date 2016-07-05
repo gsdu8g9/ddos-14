@@ -10,7 +10,7 @@ var storage = require('./storage.js');
 var cfg = require('../config.json');
 var config = cfg.collector;
 
-config.NetFlowPort = cfg.attack_service.port;
+config.NetFlowPort = cfg.NetFlow.port;
 config.numCPUs = require('os').cpus().length;
 
 
