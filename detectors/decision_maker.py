@@ -60,7 +60,7 @@ class DecisionMaker():
         X = df[features]
         
         if X.shape[0] == 0 or X.shape[1] == 0:
-            return EMPTY_MALWARE_TABLE
+            return self.EMPTY_MALWARE_TABLE
 
         pred = self.models[s].predict(df[features])
 
@@ -80,21 +80,21 @@ class DecisionMaker():
         
         malware_tables_d = self.predict(data, "d")
         
-        if malware_tables_d == EMPTY_MALWARE_TABLE:
+        if malware_tables_d == self.EMPTY_MALWARE_TABLE:
             del data
             return result
 
         
         malware_tables_s_d = self.predict(data, "s_d", malware_tables=malware_tables_d)
                
-        if malware_tables_s_d == EMPTY_MALWARE_TABLE:
+        if malware_tables_s_d == self.EMPTY_MALWARE_TABLE:
             del data
             return result
         
 
         malware_tables_sp_d = self.predict(data, "sp_d", malware_tables=malware_tables_s_d)
 
-        if malware_tables_sp_d == EMPTY_MALWARE_TABLE:
+        if malware_tables_sp_d == self.EMPTY_MALWARE_TABLE:
             del data
             return result
         
