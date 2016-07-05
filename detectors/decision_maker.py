@@ -68,7 +68,7 @@ class DecisionMaker():
             return self.EMPTY_MALWARE_TABLE
 
         pred = self.models[s].predict(df[features])
-        #print pred
+        print pred
 
         return self.get_malware_tables(df=df, pred=pred)
 
