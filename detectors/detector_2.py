@@ -33,6 +33,8 @@ def process_socket(q):
 # make decision by data
 def process_data(q):
     s = sock.socket_s()
+
+
     while True:
         pkg, time1 = q.get()
         decision = decision_maker.make(timestamp=int(pkg), depth=2)
