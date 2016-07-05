@@ -53,6 +53,8 @@ class DecisionMaker():
     def predict(self, data, s, malware_tables=None):
         
         df = self.storage.filter_data(data, nf_group_type=s, malware_tables=malware_tables)
+        
+
         features = self.features[:]
         if s != "sp_dp":
             features.append('ucount')
@@ -60,9 +62,11 @@ class DecisionMaker():
         X = df[features]
         
         if X.shape[0] == 0 or X.shape[1] == 0:
+            print "failed", s, "!!!!!!!"
             return self.EMPTY_MALWARE_TABLE
 
         pred = self.models[s].predict(df[features])
+        print pred
 
         return self.get_malware_tables(df=df, pred=pred)
 
@@ -81,7 +85,6 @@ class DecisionMaker():
         malware_tables_d = self.predict(data, "d")
         
         if malware_tables_d == self.EMPTY_MALWARE_TABLE:
-            print "d failed"
             del data
             return result
 
@@ -89,7 +92,6 @@ class DecisionMaker():
         malware_tables_s_d = self.predict(data, "s_d", malware_tables=malware_tables_d)
                
         if malware_tables_s_d == self.EMPTY_MALWARE_TABLE:
-            print "s_d failed"
             del data
             return result
         
@@ -97,13 +99,11 @@ class DecisionMaker():
         malware_tables_sp_d = self.predict(data, "sp_d", malware_tables=malware_tables_s_d)
 
         if malware_tables_sp_d == self.EMPTY_MALWARE_TABLE:
-            print "sp_d failed"
             del data
             return result
         
         
         malware_src, malware_dst = self.predict(data, "sp_dp", malware_tables=malware_tables_sp_d)
-        print "sp_dp ... failed ?!..."
         
 
         #!
