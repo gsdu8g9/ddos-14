@@ -54,7 +54,8 @@ class DecisionMaker():
         
         df = self.storage.filter_data(data, nf_group_type=s, malware_tables=malware_tables)
         
-        print 'data', str(len(df))
+        print 'data len:', str(len(data))
+        print 'df len:', str(len(df))
 
         features = self.features[:]
         if s != "sp_dp":

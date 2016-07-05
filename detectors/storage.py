@@ -140,10 +140,10 @@ class Storage():
                 
                     if len(buf) - offset > 47:
                         d = struct.unpack('!IIIIHH',buf[offset + 16:offset + 36])
-                        flow['saddr'] = self.check_ip(inet_ntoa(buf[offset + 0:offset + 4]))
+                        flow['saddr'] = inet_ntoa(buf[offset + 0:offset + 4]) # self.check_ip()
                         flow['sport'] = d[4]
 
-                        flow['daddr'] = self.check_ip(inet_ntoa(buf[offset + 4:offset + 8]))
+                        flow['daddr'] = inet_ntoa(buf[offset + 4:offset + 8]) # self.check_ip()
                         flow['dport'] = d[5]
                         
                         upair = self.get_upair_group(flow, nf_group_type)
