@@ -19,8 +19,8 @@ PROTOCOL = { 1: "ICMP", 6: "TCP", 14: "Telnet", 17: "UDP" }
 class Storage():
     def __init__(self, config):
 
-        self.conn = psycopg2.connect(host=config["hostname"], 
-                                    user=config["username"], 
+        self.conn = psycopg2.connect(host=config["host"], 
+                                    user=config["user"], 
                                     password=config["password"], 
                                     database=config["database"])
         self.ipassoc = self.get_iptable()

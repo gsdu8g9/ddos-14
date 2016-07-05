@@ -9,7 +9,7 @@ var storage = require('./storage.js');
 
 var config = {
     numCPUs: require('os').cpus().length,
-    NetFlowPort: 6344,
+    NetFlowPort: 557,
     interval: 5000,
     PORT_OUT: 6347,
     PORT_IN: 6345,
