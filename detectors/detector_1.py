@@ -44,6 +44,7 @@ def process_data(q):
         if pred[0] != 'BENIGN':
             attack_count += 1
             if attack_count > ATTACK_THRESHOLD:
+                print "send", str(data[0])
                 s.send(str(data[0]))
         else:
             attack_count = 0

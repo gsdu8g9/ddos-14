@@ -115,6 +115,7 @@ class Storage():
             
         sqlquery = "SELECT * FROM flows " + lim
         data = sql.read_sql(sqlquery, self.conn, index_col='id')
+        
         return data
         
 
