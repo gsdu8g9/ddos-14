@@ -47,6 +47,17 @@ class DecisionMaker():
         return table_src, table_dst
 
 
+    def get_malware_tables_2(self, df, pred):
+
+        if len(df) != len(pred):
+            raise ValueError('Wrong length of dataframe or prediction!')
+
+        df['pred'] = pred
+        df_ = df[df.pred != 'BENIGN'][['dst', 'src']]
+        
+        return (set(df_.src), set(df_.dst))
+
+
     '''
     Make prediction by @data with filter @s and get src and dst addresses by @malware_tables
     '''
@@ -72,47 +83,52 @@ class DecisionMaker():
         pred = self.models[s].predict(df[features])
         #print pred
 
-        return self.get_malware_tables(df=df, pred=pred)
-
+        a = self.get_malware_tables(df=df, pred=pred)
+        b = self.get_malware_tables_2(df=df, pred=pred)
+        print "\n_________________________________________________________________\n"
+        print a == b
+        print a
+        print b
 
     '''
     return list of addresses for judge
     '''
     def make(self, timestamp=None, depth=None):
+        
+        print "\n\n\'MAKE' BEGIN:"
 
         result = None
         
         # get data from DB by timestamp and depth
         data = self.storage.select(timestamp, depth)
         
-        
-        malware_tables_d = self.predict(data, "d")
-        print "\n\n\tSTART:"
-        print "d: ", malware_tables_d
 
-        if malware_tables_d == self.EMPTY_MALWARE_TABLE:
-            del data
-            return result
+        malware_tables_d = self.predict(data, "d")
+        #print "d: ", malware_tables_d
+
+        #if malware_tables_d == self.EMPTY_MALWARE_TABLE:
+        #    del data
+        #    return result
 
         
         malware_tables_s_d = self.predict(data, "s_d")
-        print "s_d: ", malware_tables_s_d
+        #print "s_d: ", malware_tables_s_d
 
-        if malware_tables_s_d == self.EMPTY_MALWARE_TABLE:
-            del data
-            return result
+        #if malware_tables_s_d == self.EMPTY_MALWARE_TABLE:
+        #    del data
+        #    return result
         
 
         malware_tables_sp_d = self.predict(data, "sp_d")
-        print "sp_d: ", malware_tables_sp_d
+        #print "sp_d: ", malware_tables_sp_d
 
-        if malware_tables_sp_d == self.EMPTY_MALWARE_TABLE:
-            del data
-            return result
+        #if malware_tables_sp_d == self.EMPTY_MALWARE_TABLE:
+        #    del data
+        #    return result
         
         
         malware_src, malware_dst = self.predict(data, "sp_dp")
-        print "sp_dp: ", (malware_src, malware_dst)
+        #print "sp_dp: ", (malware_src, malware_dst)
 
         #!
         #s = 's_d'
@@ -124,6 +140,8 @@ class DecisionMaker():
         #if len(src_list) > 0:
         #    result = "', '".join(src_list)
         
+        print "\n\n\'MAKE' END:"
+
         if len(malware_src) > 0:
             result = sorted(malware_src)
         
