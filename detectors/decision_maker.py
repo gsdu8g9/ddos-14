@@ -39,7 +39,7 @@ class DecisionMaker():
 
         for i in xrange(len(pred)):
             if pred[i] != "BENIGN":
-                #WARNING 's' filter
+                #WARNING: 's' filter must contain "d"
                 #if 'dst' in data.iloc[i]:
                 table_dst.add(df.iloc[i].dst)
                 table_src.add(df.iloc[i].src)
@@ -84,11 +84,12 @@ class DecisionMaker():
         #print pred
 
         a = self.get_malware_tables(df=df, pred=pred)
-        b = self.get_malware_tables_2(df=df, pred=pred)
-        print "\n_________________________________________________________________\n"
-        print a == b
-        print a
-        print b
+        #b = self.get_malware_tables_2(df=df, pred=pred)
+        #print "\n_________________________________________________________________\n"
+        #print a == b
+        #print a
+        #print b
+        return a
 
     '''
     return list of addresses for judge
