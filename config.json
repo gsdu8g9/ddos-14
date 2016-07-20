@@ -27,7 +27,7 @@
         "port": 6351
     },
     "firewall": {
-        "ip": "10.0.0.131",
+        "ip": "10.0.0.31",
         "db_name": "rules.sqlite",
         "backup_name": "bak.iptables",
         "dir": "data",
@@ -36,7 +36,7 @@
         "port": 6352
     },
     "attack_service": { 
-        "ip": "10.0.0.111",
+        "ip": "10.0.0.11",
 	    "port": 6345,
         "min_hunter_ip": 3,
         "max_hunter_ip": 49,
