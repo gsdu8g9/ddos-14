@@ -78,6 +78,7 @@ class DecisionMaker():
         #elif s == "d":
         #    df = df[df['dst'].isin(self.ip_list)]
 
+        print df
 
         X = df[features]
         
