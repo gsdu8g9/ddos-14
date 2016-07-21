@@ -47,8 +47,8 @@ class DecisionMaker():
                 #if 'dst' in data.iloc[i]:
                 table_dst.add(df.iloc[i].dst)
                 table_src.add(df.iloc[i].src)
-
-        return table_src - self.ip_list, table_dst
+        
+        return table_src, table_dst
 
 
     def get_malware_tables_2(self, df, pred):
@@ -106,19 +106,17 @@ class DecisionMaker():
         # get data from DB by timestamp and depth
         data = self.storage.select(timestamp, depth)
         
-
         malware_tables_d = self.predict(data, "d")
-        #print "d: ", malware_tables_d
-
+        print "d: ", malware_tables_d
         
-
+        
         if malware_tables_d == self.EMPTY_MALWARE_TABLE:
             del data
             return result
 
 
         malware_tables_s_d = self.predict(data, "s_d", malware_tables_d)
-        #print "s_d: ", malware_tables_s_d
+        print "s_d: ", malware_tables_s_d
 
         if malware_tables_s_d == self.EMPTY_MALWARE_TABLE:
             del data
@@ -126,7 +124,7 @@ class DecisionMaker():
         
 
         malware_tables_sp_d = self.predict(data, "sp_d", malware_tables_s_d)
-        #print "sp_d: ", malware_tables_sp_d
+        print "sp_d: ", malware_tables_sp_d
 
         if malware_tables_sp_d == self.EMPTY_MALWARE_TABLE:
             del data
@@ -134,7 +132,7 @@ class DecisionMaker():
         
         
         malware_src, malware_dst = self.predict(data, "sp_dp", malware_tables_sp_d)
-        #print "sp_dp: ", (malware_src, malware_dst)
+        print "sp_dp: ", (malware_src, malware_dst)
 
         '''#!
         #s = 's_d'
