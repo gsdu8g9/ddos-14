@@ -119,43 +119,43 @@ class DecisionMaker():
             return result
 
 
-        #malware_tables_s_d = self.predict(data, "s_d", malware_tables_d)
-        ##print "s_d: ", malware_tables_s_d
+        malware_tables_s_d = self.predict(data, "s_d", malware_tables_d)
+        #print "s_d: ", malware_tables_s_d
 
-        #if malware_tables_s_d == self.EMPTY_MALWARE_TABLE:
-        #    del data
-        #    return result
+        if malware_tables_s_d == self.EMPTY_MALWARE_TABLE:
+            del data
+            return result
         
 
-        #malware_tables_sp_d = self.predict(data, "sp_d", malware_tables_s_d)
-        ##print "sp_d: ", malware_tables_sp_d
+        malware_tables_sp_d = self.predict(data, "sp_d", malware_tables_s_d)
+        #print "sp_d: ", malware_tables_sp_d
 
-        #if malware_tables_sp_d == self.EMPTY_MALWARE_TABLE:
-        #    del data
-        #    return result
+        if malware_tables_sp_d == self.EMPTY_MALWARE_TABLE:
+            del data
+            return result
         
         
-        #malware_src, malware_dst = self.predict(data, "sp_dp", malware_tables_sp_d)
-        ##print "sp_dp: ", (malware_src, malware_dst)
+        malware_src, malware_dst = self.predict(data, "sp_dp", malware_tables_sp_d)
+        #print "sp_dp: ", (malware_src, malware_dst)
 
         '''#!
-        #s = 's_d'
+        s = 's_d'
 
-        #df = self.storage.filter_data(data, s)
-        #pred = self.models[s].predict(df[features])
+        df = self.storage.filter_data(data, s)
+        pred = self.models[s].predict(df[features])
         
-        #src_list = sorted(self.storage.get_src_by_predict(df, pred))
-        #if len(src_list) > 0:
-        #    result = "', '".join(src_list)
+        src_list = sorted(self.storage.get_src_by_predict(df, pred))
+        if len(src_list) > 0:
+            result = "', '".join(src_list)
         '''
 
-        #if len(malware_src) > 0:
-        #    result = sorted(malware_src)
+        if len(malware_src) > 0:
+            result = sorted(malware_src)
         
-        #del malware_tables_d
-        #del malware_tables_s_d
-        #del malware_tables_sp_d
-        #del data
+        del malware_tables_d
+        del malware_tables_s_d
+        del malware_tables_sp_d
+        del data
 
         return result
 
