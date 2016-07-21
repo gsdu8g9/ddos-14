@@ -78,6 +78,10 @@ class DecisionMaker():
         elif s == "d":
             df = df[df.dst.isin(self.ip_list)]
 
+        print "!!!!!!!!!!!!!!!!!!"
+        print self.ip_list
+        print "!!!!!!!!!!!!!!!!!!!!!"
+
         X = df[features]
         
         if X.shape[0] == 0 or X.shape[1] == 0:
