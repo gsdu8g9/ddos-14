@@ -151,10 +151,10 @@ class DecisionMaker():
         #if len(malware_src) > 0:
         #    result = sorted(malware_src)
         
-        del malware_tables_d
-        del malware_tables_s_d
-        del malware_tables_sp_d
-        del data
+        #del malware_tables_d
+        #del malware_tables_s_d
+        #del malware_tables_sp_d
+        #del data
 
         return result
 
