@@ -2,12 +2,11 @@
 from storage import Storage
 from sklearn.externals import joblib
 
-
+#1.56
+#100.57
 class DecisionMaker():
 
-
     EMPTY_MALWARE_TABLE = (set([]), set([]))
-
 
     def __init__(self, config):
 
@@ -20,9 +19,14 @@ class DecisionMaker():
             'sp_dp' : joblib.load('models_binary/100decisionTreeSP_DP.pkl'),
         }
         
+        self.ip_list = set()
+
+        with open('ip_list.txt') as f:
+            self.ip_list = set(f.readlines())
+
         self.features = ['bcount', 'pcount']
         self.features_sp_dp = ['bcount', 'pcount', 'ucount']
-    
+        
         
     '''
     return tuple of adresses where predicted malware label
@@ -44,7 +48,7 @@ class DecisionMaker():
                 table_dst.add(df.iloc[i].dst)
                 table_src.add(df.iloc[i].src)
 
-        return table_src, table_dst
+        return table_src - self.ip_list, table_dst
 
 
     def get_malware_tables_2(self, df, pred):
@@ -106,11 +110,13 @@ class DecisionMaker():
         malware_tables_d = self.predict(data, "d")
         #print "d: ", malware_tables_d
 
+        
+
         if malware_tables_d == self.EMPTY_MALWARE_TABLE:
             del data
             return result
 
-        
+
         malware_tables_s_d = self.predict(data, "s_d", malware_tables_d)
         #print "s_d: ", malware_tables_s_d
 
