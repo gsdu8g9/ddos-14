@@ -75,12 +75,9 @@ class DecisionMaker():
         features = self.features[:]
         if s != "sp_dp":
             features.append('ucount')
-        elif s == "d":
-            df = df[df.dst.isin(self.ip_list)]
+        #elif s == "d":
+        #    df = df[df['dst'].isin(self.ip_list)]
 
-        print "!!!!!!!!!!!!!!!!!!"
-        print self.ip_list
-        print "!!!!!!!!!!!!!!!!!!!!!"
 
         X = df[features]
         
@@ -88,7 +85,12 @@ class DecisionMaker():
             print "failed", s, "!!!!!!!"
             return self.EMPTY_MALWARE_TABLE
 
-        print "filtered, on prediction:", df[['dst', 'src']]
+        #print "filtered, on prediction:", df[['dst', 'src']]
+        print "\n\n\n\n\n"
+        print "DST:", df.dst 
+        print "\n\n\n\n\n"
+        print "SRC:", df.src
+        
 
         pred = self.models[s].predict(X)
         #print pred
