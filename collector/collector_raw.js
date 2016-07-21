@@ -102,7 +102,7 @@ if (cluster.isMaster) {
                 console.log(info);
                 console.log(avg_speed.toFixed(2) + ' mb/s');
                 console.log(maxTime - minTime);
-                console.log('================================\n\n');
+                console.log('================================\n');
                 cnt = 0;
                 minTime = 999999999999999;
                 maxTime = 0;
