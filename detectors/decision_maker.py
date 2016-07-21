@@ -22,7 +22,7 @@ class DecisionMaker():
         self.ip_list = set()
 
         with open('ip_list.txt') as f:
-            self.ip_list = set(f.readlines())
+            self.ip_list = set(f.read().splitlines())
 
         self.features = ['bcount', 'pcount']
         self.features_sp_dp = ['bcount', 'pcount', 'ucount']
@@ -48,7 +48,7 @@ class DecisionMaker():
                 table_dst.add(df.iloc[i].dst)
                 table_src.add(df.iloc[i].src)
 
-        return table_src , table_dst - self.ip_list
+        return table_src - self.ip_list, table_dst
 
 
     def get_malware_tables_2(self, df, pred):
