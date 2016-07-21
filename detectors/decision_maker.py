@@ -48,7 +48,7 @@ class DecisionMaker():
                 table_dst.add(df.iloc[i].dst)
                 table_src.add(df.iloc[i].src)
 
-        return table_src - self.ip_list, table_dst
+        return table_src , table_dst - self.ip_list
 
 
     def get_malware_tables_2(self, df, pred):
