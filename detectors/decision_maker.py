@@ -75,7 +75,9 @@ class DecisionMaker():
         features = self.features[:]
         if s != "sp_dp":
             features.append('ucount')
-        
+        elif s == 'd':
+            df = df[df.dst.isin(self.ip_list)]
+
         X = df[features]
         
         if X.shape[0] == 0 or X.shape[1] == 0:
@@ -85,8 +87,6 @@ class DecisionMaker():
 
         #print "filtered, on prediction:", df[['dst', 'src']]
 
-        df = df[df.dst.isin(self.ip_list)]
-        print df
 
         pred = self.models[s].predict(X)
         #print pred
