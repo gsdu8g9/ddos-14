@@ -100,11 +100,9 @@ if (cluster.isMaster) {
                 var avg_speed = (nfc.bytesCount * 8 / (interval * 1024 * 1024));
                                 
                 console.log(info);
-                console.log('--------------------------------');
                 console.log(avg_speed.toFixed(2) + ' mb/s');
                 console.log(maxTime - minTime);
-                console.log(new Date(msg.tm));
-                console.log('================================');
+                console.log('================================\n\n');
                 cnt = 0;
                 minTime = 999999999999999;
                 maxTime = 0;

@@ -34,7 +34,7 @@
     
     self.inline = function (time) {
         self.uniquePairsCount = Object.keys(self.uniquePairs).length;
-        return time + "," + self.uniquePairsCount + "," + self.bytesCount + "," + self.packetsCount;
+        return "[" + new Date(time) + "]\n" + self.uniquePairsCount + "," + self.bytesCount + "," + self.packetsCount;
     }
     
 };
