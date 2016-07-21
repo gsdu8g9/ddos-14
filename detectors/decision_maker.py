@@ -75,7 +75,8 @@ class DecisionMaker():
         features = self.features[:]
         if s != "sp_dp":
             features.append('ucount')
-        elif s == 'd':
+        
+        if s == "d":
             df = df[df.dst.isin(self.ip_list)]
 
         X = df[features]
