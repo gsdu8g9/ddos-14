@@ -85,7 +85,7 @@ class DecisionMaker():
             return self.EMPTY_MALWARE_TABLE
 
 
-        #print "filtered, on prediction:", df[['dst', 'src']]
+        print "filtered, on prediction:", df[['dst', 'src']]
 
 
         pred = self.models[s].predict(X)
