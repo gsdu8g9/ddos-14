@@ -138,7 +138,7 @@ class DecisionMaker():
         malware_src, malware_dst = self.predict(data, "sp_dp", malware_tables_sp_d)
         #print "sp_dp: ", (malware_src, malware_dst)
 
-        '''#!
+        '''#! how it was
         s = 's_d'
 
         df = self.storage.filter_data(data, s)
