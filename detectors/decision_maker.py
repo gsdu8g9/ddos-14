@@ -84,6 +84,7 @@ class DecisionMaker():
         #print pred
 
         a = self.get_malware_tables(df=df, pred=pred)
+
         #b = self.get_malware_tables_2(df=df, pred=pred)
         #print "\n_________________________________________________________________\n"
         #print a == b
@@ -96,8 +97,6 @@ class DecisionMaker():
     '''
     def make(self, timestamp=None, depth=None):
         
-        print "\n\n\'MAKE' BEGIN:"
-
         result = None
         
         # get data from DB by timestamp and depth
@@ -107,31 +106,31 @@ class DecisionMaker():
         malware_tables_d = self.predict(data, "d")
         #print "d: ", malware_tables_d
 
-        #if malware_tables_d == self.EMPTY_MALWARE_TABLE:
-        #    del data
-        #    return result
+        if malware_tables_d == self.EMPTY_MALWARE_TABLE:
+            del data
+            return result
 
         
-        malware_tables_s_d = self.predict(data, "s_d")
+        malware_tables_s_d = self.predict(data, "s_d", malware_tables_d)
         #print "s_d: ", malware_tables_s_d
 
-        #if malware_tables_s_d == self.EMPTY_MALWARE_TABLE:
-        #    del data
-        #    return result
+        if malware_tables_s_d == self.EMPTY_MALWARE_TABLE:
+            del data
+            return result
         
 
-        malware_tables_sp_d = self.predict(data, "sp_d")
+        malware_tables_sp_d = self.predict(data, "sp_d", malware_tables_s_d)
         #print "sp_d: ", malware_tables_sp_d
 
-        #if malware_tables_sp_d == self.EMPTY_MALWARE_TABLE:
-        #    del data
-        #    return result
+        if malware_tables_sp_d == self.EMPTY_MALWARE_TABLE:
+            del data
+            return result
         
         
-        malware_src, malware_dst = self.predict(data, "sp_dp")
+        malware_src, malware_dst = self.predict(data, "sp_dp", malware_tables_sp_d)
         #print "sp_dp: ", (malware_src, malware_dst)
 
-        #!
+        '''#!
         #s = 's_d'
 
         #df = self.storage.filter_data(data, s)
@@ -140,8 +139,7 @@ class DecisionMaker():
         #src_list = sorted(self.storage.get_src_by_predict(df, pred))
         #if len(src_list) > 0:
         #    result = "', '".join(src_list)
-        
-        print "\n\n\'MAKE' END:"
+        '''
 
         if len(malware_src) > 0:
             result = sorted(malware_src)

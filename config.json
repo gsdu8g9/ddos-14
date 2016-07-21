@@ -7,7 +7,7 @@
         "port": "5432"
     },
     "NetFlow": {
-        "port": 558
+        "port": 557
     },
     "collector": {
         "interval": 5000,
