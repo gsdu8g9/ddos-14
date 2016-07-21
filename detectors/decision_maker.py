@@ -82,12 +82,15 @@ class DecisionMaker():
             print "failed", s, "!!!!!!!"
             return self.EMPTY_MALWARE_TABLE
 
+        if s == "d":
+            X = X[X.dst.isin(self.ip_list)]
+
         print "filtered, on prediction:", df[['dst', 'src']]
 
-        pred = self.models[s].predict(df[features])
+        pred = self.models[s].predict(X)
         #print pred
 
-        a = self.get_malware_tables(df=df, pred=pred)
+        a = self.get_malware_tables(df=X, pred=pred)
 
         #b = self.get_malware_tables_2(df=df, pred=pred)
         #print "\n_________________________________________________________________\n"
@@ -114,24 +117,24 @@ class DecisionMaker():
             return result
 
 
-        malware_tables_s_d = self.predict(data, "s_d", malware_tables_d)
-        #print "s_d: ", malware_tables_s_d
+        #malware_tables_s_d = self.predict(data, "s_d", malware_tables_d)
+        ##print "s_d: ", malware_tables_s_d
 
-        if malware_tables_s_d == self.EMPTY_MALWARE_TABLE:
-            del data
-            return result
+        #if malware_tables_s_d == self.EMPTY_MALWARE_TABLE:
+        #    del data
+        #    return result
         
 
-        malware_tables_sp_d = self.predict(data, "sp_d", malware_tables_s_d)
-        #print "sp_d: ", malware_tables_sp_d
+        #malware_tables_sp_d = self.predict(data, "sp_d", malware_tables_s_d)
+        ##print "sp_d: ", malware_tables_sp_d
 
-        if malware_tables_sp_d == self.EMPTY_MALWARE_TABLE:
-            del data
-            return result
+        #if malware_tables_sp_d == self.EMPTY_MALWARE_TABLE:
+        #    del data
+        #    return result
         
         
-        malware_src, malware_dst = self.predict(data, "sp_dp", malware_tables_sp_d)
-        #print "sp_dp: ", (malware_src, malware_dst)
+        #malware_src, malware_dst = self.predict(data, "sp_dp", malware_tables_sp_d)
+        ##print "sp_dp: ", (malware_src, malware_dst)
 
         '''#!
         #s = 's_d'
