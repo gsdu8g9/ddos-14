@@ -85,11 +85,11 @@ class DecisionMaker():
             print "failed", s, "!!!!!!!"
             return self.EMPTY_MALWARE_TABLE
 
-        #print "filtered, on prediction:", df[['dst', 'src']]
-        print "\n\n\n\n\n"
-        print "DST:", df.dst 
-        print "\n\n\n\n\n"
-        print "SRC:", df.src
+        ##print "filtered, on prediction:", df[['dst', 'src']]
+        #print "\n\n\n\n\n"
+        #print "DST:", df['dst']
+        #print "\n\n\n\n\n"
+        #print "SRC:", df['src']
         
 
         pred = self.models[s].predict(X)
