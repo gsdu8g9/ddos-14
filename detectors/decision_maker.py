@@ -85,7 +85,8 @@ class DecisionMaker():
 
         #print "filtered, on prediction:", df[['dst', 'src']]
 
-        print df[df.dst.isin(self.ip_list)]['dst']
+        df = df[df.dst.isin(self.ip_list)]
+        print df
 
         pred = self.models[s].predict(X)
         #print pred
@@ -147,8 +148,8 @@ class DecisionMaker():
         #    result = "', '".join(src_list)
         '''
 
-        if len(malware_src) > 0:
-            result = sorted(malware_src)
+        #if len(malware_src) > 0:
+        #    result = sorted(malware_src)
         
         del malware_tables_d
         del malware_tables_s_d
