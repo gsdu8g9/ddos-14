@@ -79,6 +79,8 @@ last_time = None
 
 def main():
     
+    print "started"
+
     action = TimeInterval(2*60, teach)
 
     try:
@@ -88,6 +90,8 @@ def main():
             time.sleep(3600)
 
     except:
+        print "error"
+
         action.stop()
     
 if __name__=="__main__":
