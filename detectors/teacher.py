@@ -12,11 +12,11 @@ import os
 
 from config import config
 
+lock_filename = ".lock"
 
 def teach():
     
     model_names = ['all', 'sp_d', 's_d', 'd']
-    lock_filename = ".lock"
     _features = ['bcount', 'pcount']
     global last_time
     
@@ -52,14 +52,14 @@ def teach():
             print "len of dataframe:", len(df)
             #TODO: move in detector modules
             # save to DB
-            cur = store.conn.cursor()
+            cur = storage.conn.cursor()
             cur.execute("INSERT INTO " + table_name + " (time, ucount, pcount, bcount, target) VALUES (%s, %s, %s, %s, %s)", 
                         (df.time, df.ucount, df.pcount, df.bcount, df.target))
-            store.conn.commit()
+            storage.conn.commit()
 
             ### LOAD FULL PARSED DATA
             # load train_data
-            train_data = sql.read_sql("SELECT * FROM " + table_name + " ORDER BY id", store.conn, index_col='id')
+            train_data = sql.read_sql("SELECT * FROM " + table_name + " ORDER BY id", storage.conn, index_col='id')
 
             y = train_data.target
             X = train_data[features]
@@ -86,6 +86,7 @@ storage = Storage(config['database'])
 def main():
     
     print "started"
+    os.remove(lock_filename)
 
     action = TimeInterval(2*60, teach)
 
