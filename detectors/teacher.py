@@ -53,8 +53,13 @@ def teach():
             #TODO: move in detector modules
             # save to DB
             cur = storage.conn.cursor()
-            cur.execute("INSERT INTO " + table_name + " (time, ucount, pcount, bcount, target) VALUES (%s, %s, %s, %s, %s)", 
-                        (df.time, df.ucount, df.pcount, df.bcount, df.target))
+
+            for index in xrange(len(df)):
+                cur.execute("INSERT INTO " + table_name + " (time, ucount, pcount, bcount, target) VALUES (%s, %s, %s, %s, %s)", 
+                            (df.iloc[index].time, df.iloc[index].ucount, df.iloc[index].pcount, df.iloc[index].bcount, df.iloc[index].target))
+
+
+
             storage.conn.commit()
 
             ### LOAD FULL PARSED DATA
