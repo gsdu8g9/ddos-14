@@ -28,7 +28,7 @@ def teach():
         if not os.path.isfile(lock_filename):
             print "lock is disabled"
             break
-        print "lock is enabled"
+        #print "lock is enabled"
         
     # doWork:
     # create lock
@@ -96,13 +96,15 @@ def main():
             time.sleep(3600)
 
     except Exception as e:
-
         print "error"
         print e.message
         action.stop()
+        storage.close()
+
     except KeyboardInterrupt:
         print "stop"
         action.stop()
+        storage.close()
     
 if __name__=="__main__":
     main()
