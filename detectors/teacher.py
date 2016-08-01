@@ -41,7 +41,7 @@ def teach():
             if model_name == "sp_dp":
                 features = features + ['ucount']
 
-            table_name = "train_" + model_name
+            table_name = "table_" + model_name
 
             ### SAVE PARSED DATA IN ANOTHER TABLES
             #TODO: move in detector modules
