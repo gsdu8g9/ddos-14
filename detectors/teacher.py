@@ -9,6 +9,10 @@ import time
 import os
 
 
+
+from config import config
+
+
 def teach():
     
     model_names = ['all', 'sp_d', 's_d', 'd']
@@ -77,6 +81,7 @@ def teach():
 
 
 last_time = None
+storage = Storage(config['database'])
 
 def main():
     
