@@ -91,10 +91,12 @@ def main():
             time.sleep(3600)
 
     except Exception as e:
+
         print "error"
-
         print e.message
-
+        action.stop()
+    except KeyboardInterrupt:
+        print "stop"
         action.stop()
     
 if __name__=="__main__":
