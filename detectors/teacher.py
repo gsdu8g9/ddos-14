@@ -89,8 +89,10 @@ def main():
         while True:
             time.sleep(3600)
 
-    except:
+    except Exception as e:
         print "error"
+
+        print e.message
 
         action.stop()
     
