@@ -100,11 +100,13 @@ def main():
         print e.message
         action.stop()
         storage.close()
+        os.remove(lock_filename)
 
     except KeyboardInterrupt:
         print "stop"
         action.stop()
         storage.close()
+        os.remove(lock_filename)
     
 if __name__=="__main__":
     main()
