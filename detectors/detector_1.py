@@ -19,7 +19,14 @@ sock = Sock({
 ATTACK_THRESHOLD = 2
 attack_count = 0
 
-model = joblib.load("models_binary/100decisionTreeALL.pkl")
+model = None
+
+# auto loading fresh model
+def get_model():
+    global model
+    if not os.path.isfile(lock_filename):
+        model = joblib.load("models_binary/all.pkl")
+    return model
 
 # listening socket
 def process_socket(q):
@@ -36,7 +43,7 @@ def process_data(q):
     while True:
         pkg = q.get()
         data = [int(x) for x in pkg.split(",")]
-        pred = model.predict([data[1:]])
+        pred = get_model().predict([data[1:]])
         
         print pkg, pred
         print "attacks in row", attack_count

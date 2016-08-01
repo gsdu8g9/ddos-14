@@ -13,10 +13,10 @@ class DecisionMaker():
         self.storage = Storage(config)
         
         self.models = { 
-            'd' : joblib.load('models_binary/100decisionTreeD.pkl'),
-            's_d' : joblib.load('models_binary/100decisionTreeS_D.pkl'),
-            'sp_d' : joblib.load('models_binary/100decisionTreeSP_D.pkl'),
-            'sp_dp' : joblib.load('models_binary/100decisionTreeSP_DP.pkl'),
+            'd' : joblib.load('models_binary/d.pkl'),
+            's_d' : joblib.load('models_binary/s_d.pkl'),
+            'sp_d' : joblib.load('models_binary/sp_d.pkl'),
+            'sp_dp' : joblib.load('models_binary/sp_dp.pkl'),
         }
         
         self.ip_list = set()
@@ -27,7 +27,13 @@ class DecisionMaker():
         self.features = ['bcount', 'pcount']
         self.features_sp_dp = ['bcount', 'pcount', 'ucount']
         
-        
+    def get_model(self, s):
+        if not os.path.isfile(lock_filename):
+            models[s] = joblib.load("models_binary/" + s + ".pkl")
+
+        return self.models[s]
+
+
     '''
     return tuple of adresses where predicted malware label
     df - current dataframe
@@ -89,7 +95,7 @@ class DecisionMaker():
         #print "filtered, on prediction:", df[['dst', 'src']]
 
 
-        pred = self.models[s].predict(X)
+        pred = self.get_model(s).predict(X)
         #print pred
 
         a = self.get_malware_tables(df=df, pred=pred)
@@ -111,9 +117,11 @@ class DecisionMaker():
         # get data from DB by timestamp and depth
         data = self.storage.select(timestamp, depth)
         
+
         malware_tables_d = self.predict(data, "d")
         #print "d: ", malware_tables_d
-                
+        
+
         if malware_tables_d == self.EMPTY_MALWARE_TABLE:
             del data
             return result
