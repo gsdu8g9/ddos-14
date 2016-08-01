@@ -81,7 +81,7 @@ def teach():
             print "Finished for", model_name
     # remove lock
     os.remove(lock_filename)
-    last_time = datetime.now()
+    last_time = time.time() * 1000 #
 
 
 
