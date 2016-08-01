@@ -16,7 +16,7 @@ lock_filename = ".lock"
 
 def teach():
     
-    model_names = ['all', 'sp_d', 's_d', 'd']
+    model_names = ['all', 's_d', 'd']
     _features = ['bcount', 'pcount']
     global last_time
     
