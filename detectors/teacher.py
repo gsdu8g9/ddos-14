@@ -64,7 +64,7 @@ def teach():
 
             ### LOAD FULL PARSED DATA
             # load train_data
-            train_data = sql.read_sql("SELECT * FROM " + table_name + " ORDER BY id", storage.conn, index_col='id')
+            train_data = sql.read_sql("SELECT * FROM " + table_name + " ORDER BY index", storage.conn, index_col='index')
 
             y = train_data.target
             X = train_data[features]
