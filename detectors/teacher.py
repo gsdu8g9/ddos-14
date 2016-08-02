@@ -1,4 +1,4 @@
-from sklearn.tree import DecisionTreeClassifier
+from sklearn.tree import DecisionTreeClassifier, export_graphviz
 from datetime import datetime, timedelta
 from sklearn.externals import joblib
 from tinterval import TimeInterval
@@ -7,17 +7,20 @@ from pandas.io import sql
 import pandas as pd
 import time
 import os
-
-
+import subprocess
+import numpy as np
 
 from config import config
 
 lock_filename = config["teacher"]["lock_filename"]
+last_time = None
+storage = Storage(config['database'])
+features = ['bcount', 'pcount', 'ucount']
+THRESHOLD = 10
 
 def teach():
     
     model_names = ['all', 's_d', 'd']
-    _features = ['bcount', 'pcount']
     global last_time
     
     # check .lock
@@ -37,10 +40,7 @@ def teach():
         for model_name in model_names:
             print "prepare to teach:", model_name
             # prepare features names
-            features = _features[:]
-            if model_name == "sp_dp":
-                features = features + ['ucount']
-
+            
             table_name = "table_" + model_name
 
             ### SAVE PARSED DATA IN ANOTHER TABLES
@@ -50,9 +50,9 @@ def teach():
             print "len of data:", len(data)
             df = storage.filter_data(data, nf_group_type=model_name)
             print "len of dataframe:", len(df)
-
-
-
+            if len(data) < THRESHOLD:
+                continue
+            
             #TODO: move in detector modules
             # save to DB
             #cur = storage.conn.cursor()
@@ -77,15 +77,23 @@ def teach():
 
             # save model in file
             joblib.dump(model, model_name + ".pkl")
+            visualize_tree(model, features, model_name)
             print "Finished for", model_name
     # remove lock
     os.remove(lock_filename)
     last_time = time.time() * 1000 #
 
-
-
-last_time = None
-storage = Storage(config['database'])
+def visualize_tree(clf, feature_names, model_name):
+    
+    fname = model_name + ".dot"
+    with open(fname, 'w') as f:
+        export_graphviz(clf, out_file=f, feature_names=feature_names)
+    
+    command = ["dot", "-Tpng", fname, "-o", model_name + ".png"]
+    try:
+        subprocess.check_call(command)
+    except:
+        exit("Could not run dot, ie graphviz, to produce visualization")
 
 def main():
     
