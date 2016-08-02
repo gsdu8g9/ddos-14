@@ -11,7 +11,7 @@ from config import config
 config_db = config['database']
 
 def load_training_data(s):
-    d = joblib.load(s + ".dat")[['time', 'bcount', 'pcount', 'ucount']]
+    d = joblib.load(s + ".dat")[['time', 'bcount', 'pcount', 'ucount', 'target']]
     return d
 
 connection_string = 'postgresql://%s:%s@%s:%s/%s' % (config_db['user'], config_db['password'], config_db['host'], config_db['port'], config_db['database'])
@@ -34,5 +34,7 @@ print "table_d ADDED"
 data_s_d = load_training_data('100S_D')
 data_s_d.to_sql('table_s_d', engine)
 del data_s_d
+
+engine.close()
 
 print "table_s_d ADDED"
