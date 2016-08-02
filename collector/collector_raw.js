@@ -90,7 +90,7 @@ if (cluster.isMaster) {
             if (cnt >= config.numCPUs) {
                 var info = nfc.inline(msg.tm);
 
-                storage.store({ time: new Date(msg.tm), buffer: nfc.bytesArray, atk_name: attack['name'], atk_desc: attack['desc'] }, function () { });
+                storage.store({ time: msg.tm, buffer: nfc.bytesArray, atk_name: attack['name'], atk_desc: attack['desc'] }, function () { });
                 
                 socket_s.send(info);
 

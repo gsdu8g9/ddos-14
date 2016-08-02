@@ -16,6 +16,7 @@ sock = Sock({
     "ip_out": config['detector_1']['ip']
 })
 
+storage = Storage(config["database"])
 
 ATTACK_THRESHOLD = 2
 attack_count = 0
@@ -43,7 +44,6 @@ def process_data(q):
     s = sock.socket_s()
     global attack_count
     
-    storage = Storage(config["database"])
     cur = storage.conn.cursor()
 
     while True:
