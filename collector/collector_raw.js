@@ -90,7 +90,7 @@ if (cluster.isMaster) {
             if (cnt >= config.numCPUs) {
                 var info = nfc.inline(msg.tm);
 
-                storage.store({ time: msg.tm, buffer: nfc.bytesArray, atk_name: attack['name'], atk_desc: attack['desc'] }, function () { });
+                storage.store({ time: new Date(msg.tm), buffer: nfc.bytesArray, atk_name: attack['name'], atk_desc: attack['desc'] }, function () { });
                 
                 socket_s.send(info);
 
@@ -99,7 +99,6 @@ if (cluster.isMaster) {
                 var interval = config.interval / 1000;
                 var avg_speed = (nfc.bytesCount * 8 / (interval * 1024 * 1024));
                                 
-                console.log(info);
                 console.log(avg_speed.toFixed(2) + ' mb/s');
                 console.log(maxTime - minTime);
                 console.log('================================\n');
