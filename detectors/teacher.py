@@ -32,7 +32,7 @@ def teach():
             print "lock is disabled"
             break
         #print "lock is enabled"
-        
+    changed = False
     # doWork:
     # create lock
     with open(lock_filename, 'w') as lock:
@@ -60,15 +60,18 @@ def teach():
 
             ### LOAD FULL PARSED DATA
             # load train_data
-            cur = storage.conn.cursor()
-            cur.execute("SELECT COUNT(*) FROM table_" + model_name + " WHERE time >= %s", [last_time,])
-            last_time_date_count = cur.fetchone()[0]
-            print "len:", last_time_date_count
-            cur.close()
+            if last_time is not None:
+                cur = storage.conn.cursor()
+                cur.execute("SELECT COUNT(*) FROM table_" + model_name + " WHERE time >= %s", [last_time,])
+                last_time_date_count = cur.fetchone()[0]
+                print "len:", last_time_date_count
+                cur.close()
             
-            if last_time_date_count < THRESHOLD:
-                continue
+                if last_time_date_count < THRESHOLD:
+                    continue
             
+            changed = True
+
             train_data = sql.read_sql("SELECT * FROM " + table_name + " ORDER BY index", storage.conn, index_col='index')
 
             y = train_data.target
@@ -87,7 +90,8 @@ def teach():
             print "Finished for", model_name
     # remove lock
     os.remove(lock_filename)
-    last_time = datetime.now()
+    if changed:
+        last_time = datetime.now()
 
 def visualize_tree(clf, feature_names, model_name):
     
