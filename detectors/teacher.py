@@ -46,13 +46,10 @@ def teach():
             ### SAVE PARSED DATA IN ANOTHER TABLES
             #TODO: move in detector modules
             #load last data from RAW 
-            data = storage.select(t1=last_time)
-            print "len of data:", len(data)
-            df = storage.filter_data(data, nf_group_type=model_name)
-            print "len of dataframe:", len(df)
-            if len(data) < THRESHOLD:
-                continue
-            
+            #data = storage.select(t1=last_time)
+            #print "len of data:", len(data)
+            #df = storage.filter_data(data, nf_group_type=model_name)
+            #print "len of dataframe:", len(df)
             #TODO: move in detector modules
             # save to DB
             #cur = storage.conn.cursor()
@@ -63,6 +60,15 @@ def teach():
 
             ### LOAD FULL PARSED DATA
             # load train_data
+            cur = storage.conn.cursor()
+            cur.execute("SELECT COUNT(*) FROM table_" + model_name + " WHERE time >= %s", [datetime.fromtimestamp(last_time),])
+            last_time_date_count = cur.fetchone()[0]
+            print "len:", last_time_date_count
+            cur.close()
+            
+            if last_time_date_count < THRESHOLD:
+                continue
+            
             train_data = sql.read_sql("SELECT * FROM " + table_name + " ORDER BY index", storage.conn, index_col='index')
 
             y = train_data.target
@@ -81,7 +87,7 @@ def teach():
             print "Finished for", model_name
     # remove lock
     os.remove(lock_filename)
-    last_time = time.time() * 1000 #
+    last_time = time.time()
 
 def visualize_tree(clf, feature_names, model_name):
     
