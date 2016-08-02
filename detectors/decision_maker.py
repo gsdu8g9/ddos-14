@@ -29,7 +29,7 @@ class DecisionMaker():
         
     def get_model(self, s):
         if not os.path.isfile(config["teacher"]["lock_filename"]):
-            models[s] = joblib.load("models_binary/" + s + ".pkl")
+            self.models[s] = joblib.load("models_binary/" + s + ".pkl")
 
         return self.models[s]
 
@@ -183,5 +183,4 @@ class DecisionMaker():
 
 
     def end(self):
-
         self.storage.close()
