@@ -3,7 +3,8 @@ import sys, time, os
 from multiprocessing import Process, Queue
 from sklearn.externals import joblib
 from sklearn.tree import DecisionTreeClassifier
-
+from datetime import datetime
+from storage import Storage
 from sock import Sock
 
 from config import config
@@ -15,6 +16,8 @@ sock = Sock({
     "ip_out": config['detector_1']['ip']
 })
 
+storage = Storage(config["database"])
+
 
 ATTACK_THRESHOLD = 2
 attack_count = 0
@@ -24,9 +27,10 @@ model = None
 # auto loading fresh model
 def get_model():
     global model
-    if not os.path.isfile(lock_filename):
+    if not os.path.isfile(config['teacher']['lock_filename']):
         model = joblib.load("models_binary/all.pkl")
     return model
+
 
 # listening socket
 def process_socket(q):
@@ -40,6 +44,8 @@ def process_socket(q):
 def process_data(q):
     s = sock.socket_s()
     global attack_count
+    cur = storage.conn.cursor()
+
     while True:
         pkg = q.get()
         data = [int(x) for x in pkg.split(",")]
@@ -54,6 +60,13 @@ def process_data(q):
                 print "send", str(data[0])
                 s.send(str(data[0]))
         else:
+            # save to DB "table_all"
+            # uniquePairsCount, bytesCount, packetsCount
+            cur.execute("INSERT INTO table_all (time, ucount, pcount, bcount, target) VALUES (%s, %s, %s, %s, %s)", 
+                        (datetime.now(), data[1], data[3], data[2], "BENIGN"))
+            
+            storage.conn.commit()
+
             attack_count = 0
 
 def main():

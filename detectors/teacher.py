@@ -12,7 +12,7 @@ import os
 
 from config import config
 
-lock_filename = ".lock"
+lock_filename = config["teacher"]["lock_filename"]
 
 def teach():
     
@@ -50,17 +50,16 @@ def teach():
             print "len of data:", len(data)
             df = storage.filter_data(data, nf_group_type=model_name)
             print "len of dataframe:", len(df)
+
+
+
             #TODO: move in detector modules
             # save to DB
-            cur = storage.conn.cursor()
-
-            for index in xrange(len(df)):
-                cur.execute("INSERT INTO " + table_name + " (time, ucount, pcount, bcount, target) VALUES (%s, %s, %s, %s, %s)", 
-                            (df.iloc[index].time, df.iloc[index].ucount, df.iloc[index].pcount, df.iloc[index].bcount, df.iloc[index].target))
-
-
-
-            storage.conn.commit()
+            #cur = storage.conn.cursor()
+            #for index in xrange(len(df)):
+            #    cur.execute("INSERT INTO " + table_name + " (time, ucount, pcount, bcount, target) VALUES (%s, %s, %s, %s, %s)", 
+            #                (df.iloc[index].time, df.iloc[index].ucount, df.iloc[index].pcount, df.iloc[index].bcount, df.iloc[index].target))
+            #storage.conn.commit()
 
             ### LOAD FULL PARSED DATA
             # load train_data
@@ -103,13 +102,12 @@ def main():
             time.sleep(3600)
 
     except Exception as e:
-        print "error"
         print e.message
         action.stop()
         storage.close()
 
     except KeyboardInterrupt:
-        print "stop"
+        print ("Caught KeyboardInterrupt, terminating workers")
         action.stop()
         storage.close()
     

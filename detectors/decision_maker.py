@@ -28,7 +28,7 @@ class DecisionMaker():
         self.features_sp_dp = ['bcount', 'pcount', 'ucount']
         
     def get_model(self, s):
-        if not os.path.isfile(lock_filename):
+        if not os.path.isfile(config["teacher"]["lock_filename"]):
             models[s] = joblib.load("models_binary/" + s + ".pkl")
 
         return self.models[s]
