@@ -25,7 +25,7 @@ class DecisionMaker():
             self.ip_list = set(f.read().splitlines())
 
         self.features = ['bcount', 'pcount']
-        self.features_sp_dp = ['bcount', 'pcount', 'ucount']
+        self.features_full = ['bcount', 'pcount', 'ucount']
         
     def get_model(self, s):
         if not os.path.isfile(config["teacher"]["lock_filename"]):
@@ -39,21 +39,30 @@ class DecisionMaker():
     df - current dataframe
     pred - predicted list
     '''
-    def get_malware_tables(self, df, pred):
+    def get_malware_tables(self, df, pred, s=None):
 
         if len(df) != len(pred):
             raise ValueError('Wrong length of dataframe or prediction!')
 
         table_src = set()
         table_dst = set()
-
+                
+        cur = self.storage.conn.cursor()
+        
         for i in xrange(len(pred)):
             if pred[i] != "BENIGN":
                 #WARNING: 's' filter must contain "d"
                 #if 'dst' in data.iloc[i]:
                 table_dst.add(df.iloc[i].dst)
                 table_src.add(df.iloc[i].src)
+            elif s is not None:
+                table = "table_" + s
+                data = df.iloc[i][['time', 'bcount', 'pcount', 'ucount']].tolist() + ['BENIGN']
+                cur.execute("INSERT INTO " + table + " (time, bcount, pcount, ucount, target) VALUES (%s, %s, %s, %s, %s)", data)
         
+        self.storage.conn.commit()
+        cur.close()
+
         return table_src, table_dst
 
 

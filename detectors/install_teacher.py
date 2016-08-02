@@ -10,7 +10,7 @@ from config import config
 config_db = config['database']
 
 def load_training_data(s):
-    d = joblib.load(s + ".dat")
+    d = joblib.load(s + ".dat")[['time', 'bcount', 'pcount', 'ucount']]
     return d
 
 connection_string = 'postgresql://%s:%s@%s:%s/%s' % (config_db['user'], config_db['password'], config_db['host'], config_db['port'], config_db['database'])

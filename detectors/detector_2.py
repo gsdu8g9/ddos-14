@@ -12,6 +12,7 @@ from config import config
 
 decision_maker = DecisionMaker(config['database'])
 
+
 sock = Sock({
     "port_in": config['detector_2']['port'],
     "port_out": config['judge_service']['port'],
@@ -33,7 +34,6 @@ def process_socket(q):
 # make decision by data
 def process_data(q):
     s = sock.socket_s()
-
 
     while True:
         pkg, time1 = q.get()
