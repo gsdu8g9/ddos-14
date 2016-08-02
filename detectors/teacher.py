@@ -93,7 +93,7 @@ def main():
     if os.path.isfile(lock_filename):
         os.remove(lock_filename)
 
-    action = TimeInterval(10, teach)
+    action = TimeInterval(config['teacher']['interval'], teach)
 
     try:
         action.start()        
