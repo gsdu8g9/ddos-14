@@ -61,7 +61,7 @@ def teach():
             ### LOAD FULL PARSED DATA
             # load train_data
             cur = storage.conn.cursor()
-            cur.execute("SELECT COUNT(*) FROM table_" + model_name + " WHERE time >= %s", [datetime.fromtimestamp(last_time),])
+            cur.execute("SELECT COUNT(*) FROM table_" + model_name + " WHERE time >= %s", [last_time,])
             last_time_date_count = cur.fetchone()[0]
             print "len:", last_time_date_count
             cur.close()
@@ -87,7 +87,7 @@ def teach():
             print "Finished for", model_name
     # remove lock
     os.remove(lock_filename)
-    last_time = time.time()
+    last_time = datetime.now()
 
 def visualize_tree(clf, feature_names, model_name):
     
