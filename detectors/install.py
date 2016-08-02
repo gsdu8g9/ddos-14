@@ -35,6 +35,4 @@ data_s_d = load_training_data('100S_D')
 data_s_d.to_sql('table_s_d', engine)
 del data_s_d
 
-engine.close()
-
 print "table_s_d ADDED"
