@@ -63,7 +63,7 @@ def process_data(q):
             # save to DB "table_all"
             # uniquePairsCount, bytesCount, packetsCount
             cur.execute("INSERT INTO table_all (time, ucount, pcount, bcount, target) VALUES (%s, %s, %s, %s, %s)", 
-                        (datetime.now(), data[1], data[3], data[2], "BENIGN"))
+                        [datetime.now(), data[1], data[3], data[2], "BENIGN"])
             
             storage.conn.commit()
 
@@ -85,6 +85,7 @@ def main():
         print ("Caught KeyboardInterrupt, terminating workers")
         p_socket.terminate()
         p_data.terminate()
+        storage.close()
 
 
 if __name__ == "__main__":

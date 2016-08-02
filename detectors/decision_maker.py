@@ -107,7 +107,12 @@ class DecisionMaker():
         pred = self.get_model(s).predict(X)
         #print pred
 
-        a = self.get_malware_tables(df=df, pred=pred)
+        if s in ['d', 's_d']:
+            x = None
+        else:
+            x = s
+
+        a = self.get_malware_tables(df=df, pred=pred, s=x)
 
         #b = self.get_malware_tables_2(df=df, pred=pred)
         #print "\n_________________________________________________________________\n"
