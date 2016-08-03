@@ -44,6 +44,6 @@
     },
     "teacher": {
         "lock_filename": ".lock",
-        "interval":  120
+        "interval":  100
     }
 }
