@@ -52,12 +52,11 @@ var createTable = function (c) {
     var query = client.query(get_create_table_flows());
     query.on('end', function () {
         var query1 = client.query(get_create_table_addresses());
-        query.on('end', function () {
+        query1.on('end', function () {
             client.end();
             console.log("* Table ADDRESSES created!");
             c();
         });
-        client.end();
         console.log("* Table created!");
     });
 

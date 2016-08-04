@@ -12,7 +12,6 @@ with open("config.json") as config_file:
     config = json.load(config_file)['database']
 
 
-
 sql_query = "SELECT * FROM addresses ORDER BY time"
 
 

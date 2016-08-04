@@ -94,7 +94,9 @@ exports.saveAddr = function (d, c) {
 
             // x[0] - time
             // x[1] - address
-            client.query('INSERT INTO addresses (time, address) VALUES ($1, $2)', x, function (err, result) {
+            console.log(x);
+
+            client.query('INSERT INTO addresses (time, address) VALUES ($1, $2)', [x[0], x[1]], function (err, result) {
                 
                 if (handleError(err, client)) {
                     console.log(err);
