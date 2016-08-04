@@ -84,6 +84,8 @@ if (cluster.isMaster) {
             nfc.flows += msg.result.flows;
             nfc.add(msg.result);
             
+            nfc.addrList.concat(msg.result.addrList);
+
             minTime = Math.min(minTime, msg.tm);
             maxTime = Math.max(maxTime, msg.tm);
 
@@ -92,13 +94,15 @@ if (cluster.isMaster) {
 
                 storage.store({ time: new Date(msg.tm), buffer: nfc.bytesArray, atk_name: attack['name'], atk_desc: attack['desc'] }, function () { });
                 
+                //storage.saveAddr(nfc.addrList, function () { })
                 socket_s.send(info);
 
                 //console.log('Stored: ' + nfc.bytesArray.length);
 
                 var interval = config.interval / 1000;
                 var avg_speed = (nfc.bytesCount * 8 / (interval * 1024 * 1024));
-                                
+                
+                console.log(nfc.addrList);
                 console.log(avg_speed.toFixed(2) + ' mb/s');
                 console.log(maxTime - minTime);
                 console.log('================================\n');
@@ -129,6 +133,13 @@ if (cluster.isMaster) {
     
     var q2 = async.queue(function (task, callback) {
         nfc.add(task.flow);
+        
+        var flow = task.flow;
+
+        var addr = flow.srcAddr + ":" + flow.srcPort + "_" + flow.dstAddr + ":" + flow.dstPort;
+        
+        nfc.addrList.push([new Date().getTime(), addr]);
+
         callback();
     }, 2);
     
@@ -182,6 +193,7 @@ if (cluster.isMaster) {
                 
                 flow.uniquePairs = {};
                 flow.uniquePairs[flow.srcAddr + ":" + flow.srcPort + "_" + flow.dstAddr + ":" + flow.dstPort] = 1;
+
             }
             
             q2.push({ flow: flow, time: task.time });

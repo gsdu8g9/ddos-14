@@ -15,7 +15,10 @@
     self.uniquePairs = {};
     self.bytesArray = [];
     
+    self.addrList = [];
+
     self.add = function (flow) {
+        
         self.bytesCount += flow.bytesCount;
         self.packetsCount += flow.packetsCount;
         
@@ -27,7 +30,7 @@
         for (var p in flow.uniquePairs) {
             self.uniquePairs[p] = 1;
         }
-
+        
     };
     
     self.uniquePairsCount = 0;

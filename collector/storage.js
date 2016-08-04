@@ -29,10 +29,8 @@ exports.add = function (d) {
 
 
 exports.store = function (d, c) {
-
+    
     pg.connect(config, function (err, client, done) {
-        
-        
         
         var handleError = function (err, client) {
             if (!err) {
@@ -45,22 +43,22 @@ exports.store = function (d, c) {
             
             return true;
         };
-                
-    
+        
+        
         if (handleError(err, client)) {
             console.log(err);
             return false;
         }
-
-        client.query('INSERT INTO flows (time, data, atk_name, atk_desc) VALUES ($1, $2, $3, $4)', [d.time, d.buffer, d.atk_name, d.atk_desc], function (err, result) {
         
+        client.query('INSERT INTO flows (time, data, atk_name, atk_desc) VALUES ($1, $2, $3, $4)', [d.time, d.buffer, d.atk_name, d.atk_desc], function (err, result) {
+            
             if (handleError(err, client)) {
                 console.log(err);
                 return false;
             }
-        
+            
             done();
-
+            
             if (c != undefined) {
                 c();
             }
@@ -69,6 +67,54 @@ exports.store = function (d, c) {
     });
 
 };
+
+exports.saveAddr = function (d, c) {
+    
+    pg.connect(config, function (err, client, done) {
+        
+        var handleError = function (err, client) {
+            if (!err) {
+                return false;
+            }
+            
+            if (client) {
+                done(client);
+            }
+            
+            return true;
+        };
+        
+        
+        if (handleError(err, client)) {
+            console.log(err);
+            return false;
+        }
+        
+        for (x in d) {
+
+            // x[0] - time
+            // x[1] - address
+            client.query('INSERT INTO addresses (time, address) VALUES ($1, $2)', x, function (err, result) {
+                
+                if (handleError(err, client)) {
+                    console.log(err);
+                    return false;
+                }
+                
+                done();
+                
+                if (c != undefined) {
+                    c();
+                }
+
+            });    
+        }
+
+        
+    });
+
+};
+
 
 
 exports.fetchAll = function (callback, limit) {

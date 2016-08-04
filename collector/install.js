@@ -33,6 +33,14 @@ var get_create_table_flows = function () {
         "   PRIMARY KEY(id));";
 };
 
+var get_create_table_addresses = function () {
+    return "CREATE TABLE IF NOT EXISTS addresses (" +
+        "   id   SERIAL NOT NULL, " +
+        "   time TIMESTAMP NOT NULL, " +
+        "   address TEXT," + 
+        "   PRIMARY KEY(id));";
+};
+
 var get_drop_db = function () {
     return "DROP DATABASE IF EXISTS " + config.database;
 };
