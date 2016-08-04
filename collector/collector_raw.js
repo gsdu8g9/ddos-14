@@ -138,7 +138,7 @@ if (cluster.isMaster) {
 
         var addr = flow.srcAddr + ":" + flow.srcPort + "_" + flow.dstAddr + ":" + flow.dstPort;
         
-        nfc.addrList.push([new Date().getTime(), addr]);
+        nfc.addrList.push([new Date(), addr]);
         
         callback();
     }, 2);
