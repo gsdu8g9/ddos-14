@@ -94,7 +94,10 @@ if (cluster.isMaster) {
                 
                 storage.store({ time: new Date(msg.tm), buffer: nfc.bytesArray, atk_name: attack['name'], atk_desc: attack['desc'] }, function () { });
                 
+                // WARNING FOR TESTS: LIST OF ADDRESSES 
                 storage.saveAddr(nfc.addrList, function () { })
+                
+                
                 socket_s.send(info);
 
                 //console.log('Stored: ' + nfc.bytesArray.length);

@@ -15,27 +15,26 @@ with open("config.json") as config_file:
 sql_query = "SELECT * FROM addresses ORDER BY time"
 
 
+data = None
+
+
+
 
 #connect to DB
-conn = psycopg2.connect(host=config["host"], 
-                        user=config["user"], 
-                        password=config["password"], 
-                        database=config["database"])
+with psycopg2.connect(host=config["host"], 
+                      user=config["user"], 
+                      password=config["password"], 
+                      database=config["database"]) as conn:
+    #fetch data
+    data = sql.read_sql(sql_query, conn, index_col='id')
+
+if data is None:
+    print("SOMETHING WRONG!!!")
+
+else:
+    #save addresses.pkl
+    joblib.dump(data, "addresses.pkl")
 
 
-
-
-#fetch data
-data = sql.read_sql(sql_query, conn, index_col='id')
-
-
-
-
-#save addresses.pkl
-joblib.dump(data, "addresses.pkl")
-
-
-
-
-#close connection
-print("DONE")
+    #close connection
+    print("DONE")
