@@ -91,6 +91,10 @@ if (cluster.isMaster) {
 
             if (cnt >= config.numCPUs) {
                 var info = nfc.inline(msg.tm);
+                
+                console.log("2: ");
+                console.log(msg.result.addrList);
+                console.log("\n\n\n\n");
 
                 storage.store({ time: new Date(msg.tm), buffer: nfc.bytesArray, atk_name: attack['name'], atk_desc: attack['desc'] }, function () { });
                 
@@ -139,6 +143,9 @@ if (cluster.isMaster) {
         var addr = flow.srcAddr + ":" + flow.srcPort + "_" + flow.dstAddr + ":" + flow.dstPort;
         
         nfc.addrList.push([new Date().getTime(), addr]);
+        
+        console.log("1: ");
+        console.log(nfc.addrList);
 
         callback();
     }, 2);
