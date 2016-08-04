@@ -90,6 +90,8 @@ exports.saveAddr = function (d, c) {
             return false;
         }
         
+        console.log(d);
+
         for (x in d) {
 
             // x[0] - time
