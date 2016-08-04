@@ -90,15 +90,11 @@ exports.saveAddr = function (d, c) {
             return false;
         }
         
-        console.log(d);
+        for (index in d) {
 
-        for (x in d) {
-
-            // x[0] - time
-            // x[1] - address
-            console.log(x);
-
-            client.query('INSERT INTO addresses (time, address) VALUES ($1, $2)', [x[0], x[1]], function (err, result) {
+            // [0] - time
+            // [1] - address
+            client.query('INSERT INTO addresses (time, address) VALUES ($1, $2)', [d[index]], function (err, result) {
                 
                 if (handleError(err, client)) {
                     console.log(err);
