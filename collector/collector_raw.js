@@ -94,7 +94,7 @@ if (cluster.isMaster) {
                 
                 storage.store({ time: new Date(msg.tm), buffer: nfc.bytesArray, atk_name: attack['name'], atk_desc: attack['desc'] }, function () { });
                 
-                //storage.saveAddr(nfc.addrList, function () { })
+                storage.saveAddr(nfc.addrList, function () { })
                 socket_s.send(info);
 
                 //console.log('Stored: ' + nfc.bytesArray.length);
@@ -102,7 +102,7 @@ if (cluster.isMaster) {
                 var interval = config.interval / 1000;
                 var avg_speed = (nfc.bytesCount * 8 / (interval * 1024 * 1024));
                 
-                console.log(nfc.addrList);
+                //console.log(nfc.addrList);
                 console.log(avg_speed.toFixed(2) + ' mb/s');
                 console.log(maxTime - minTime);
                 console.log('================================\n');
