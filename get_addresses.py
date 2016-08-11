@@ -3,6 +3,7 @@ from sklearn.externals import joblib
 import pandas as pd
 from pandas.io import sql
 import psycopg2
+import numpy as np
 import json
 
 config = None
