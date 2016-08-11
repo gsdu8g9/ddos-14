@@ -13,7 +13,7 @@ with open("config.json") as config_file:
     config = json.load(config_file)['database']
 
 
-sql_query = "SELECT * FROM addresses ORDER BY time"
+sql_query = "SELECT * FROM addresses ORDER BY time DESC"
 
 data = None
 
@@ -26,6 +26,8 @@ with psycopg2.connect(host=config["host"],
     #fetch data
     data = sql.read_sql(sql_query, conn, index_col='id')
 
+    joblib.dump(data, "addresses.pkl")
+
     data.time = data.time.map(lambda t: t.replace(microsecond=0))
 
     data_by_time = data.groupby(['time']).count()
@@ -36,5 +38,10 @@ with psycopg2.connect(host=config["host"],
 
     joblib.dump(data_by_time, "by_time.pkl")
     joblib.dump(data_by_src, "by_src.pkl")
+
+    data['src'] = data.src.str.split(':').str.get(0)
+    data_by_src = data.groupby(['time', 'src']).count()
+    joblib.dump(data_by_src, "by_src_ip.pkl")
+
 
     print("DONE")
